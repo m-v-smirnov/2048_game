@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <section class="game">
+        <div class="game__header">
+            <div>
+                <p class="game__name">2048</p>
+                <div>
+                    <p>Join the tiles, get to 2048!</p>
+                    <a href="#rules">How to play</a>
+                </div>
+            </div>
+            <div class="game__controls">
+                <div class="game__scores">
+                    <div class="game__score">
+                        <p>Score</p>
+                        <p>0</p>
+                    </div>
+                    <div class="game__best">
+                        <p>Best</p>
+                        <p>0</p>
+                    </div>
+                </div>
+                <input class="game__button" type="button" value="New game" id="newGame">
+            </div>
+        </div>
+        <div class="game__field">
+            <table class="game__table" id="table">
+                <tr>
+                    <td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+                <tr>
+                    <td>0</td><td>0</td><td>0</td><td>0</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section class="rules"  id="rules">
+        <div class="rules__text">
+                <p>HOW TO PLAY: Use your arrow keys to move the tiles. Tiles 
+                    with the same number merge into one when they touch. 
+                    Add them up to reach 2048!</p>
+        </div>
+        <a href="">Start playing</a>
+
+    </section>
+</body>
+</html>

@@ -1,0 +1,54 @@
+* {
+    background-color: azure;
+}
+.game {
+  
+    display: flex;
+    flex-direction: column;
+    padding-top: 50px;
+}
+.game__header {
+    width: 568px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+.game__controls{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.game__scores {
+    display: flex;
+}
+.game__score {
+    padding: 0 10px;
+}
+.game__best {
+    padding: 0 10px;
+}
+.game__field {
+    /*padding-top: 50px;*/
+    margin: 50px auto;
+    border: 8px solid darkgrey;
+    border-radius: 7px;
+}
+TABLE {
+    /*border-collapse: collapse;
+    border: 16px solid darkgrey;
+    border-radius: 8px;*/
+    background-color: darkgrey;
+    border-spacing: 16px;
+}
+TD {
+    height: 100px;
+    width: 100px;
+    border: 10px solid azure;
+    border-radius: 7px;
+    text-align: center;
+}
+.rules {
+    width: 568px;
+    margin: 0 auto;
+    padding-top: 100px;
+}
