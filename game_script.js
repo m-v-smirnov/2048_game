@@ -34,11 +34,11 @@ function fieldRender(arr,elem) {
     }
 };
 
-gameArr[2][1] = 1024;
-gameArr[3][3] = 32;
+//gameArr[2][1] = 1024;
+//gameArr[3][3] = 32;
 
-gameArr.forEach(function(item, index, array) {
-    console.log(item);
-});
+//gameArr.forEach(function(item, index, array) {
+//    console.log(item);
+//});
 
 fieldRender(gameArr,fieldElem);
