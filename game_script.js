@@ -108,6 +108,47 @@ function moveAllCellsRight(arr2d) {
     }
 }
 
+function mergeEqualCellsLeft(arr2d) {
+    for (let j = 0; j < arr2d.length; j++) {
+        for (let i = 1; i < arr2d.length; i++) {
+            if (arr2d[i][j] == arr2d[i-1][j]) {
+                arr2d[i][j] = 0;
+                arr2d[i-1][j] *= 2;
+            }
+        }
+    }
+}
+function mergeEqualCellsRight(arr2d) {
+    for (let j = 0; j < arr2d.length; j++) {
+        for (let i = arr2d.length-1; i > 0; i--) {
+            if (arr2d[i][j] == arr2d[i-1][j]) {
+                arr2d[i-1][j] = 0;
+                arr2d[i][j] *= 2;
+            }
+        }
+    }
+}
+function mergeEqualCellsUp(arr2d) {
+    for (let i = 0; i < arr2d.length; i++) {
+        for (let j = 1; j < arr2d.length; j++) {
+            if (arr2d[i][j] == arr2d[i][j-1]) {
+                arr2d[i][j] = 0;
+                arr2d[i][j-1] *= 2;
+            }
+        }
+    }
+}
+function mergeEqualCellsDown(arr2d) {
+    for (let i = 0; i < arr2d.length; i++) {
+        for (let j = arr2d.length-1; j > 0; j--) {
+            if (arr2d[i][j] == arr2d[i][j-1]) {
+                arr2d[i][j-1] = 0;
+                arr2d[i][j] *= 2;
+            }
+        }
+    }
+}
+
 function insertRandomSquare(arr2d,item) {
     let pos = getZerosPos(arr2d);
     let index = Math.floor(Math.random() * pos.length);
@@ -132,25 +173,41 @@ document.addEventListener('keydown', function(event) {
     switch (event.code) {
         case 'ArrowUp':
             //console.log('ArrowUp key down');
+            event.preventDefault();
             moveAllCellsUp(gameArr);
+            mergeEqualCellsUp(gameArr);
+            moveAllCellsUp(gameArr);
+            insertRandomSquare(gameArr,2);
             fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowDown':
             //console.log('ArrowDown key down');
+            event.preventDefault();
             moveAllCellsDown(gameArr);
+            mergeEqualCellsDown(gameArr);
+            moveAllCellsDown(gameArr);
+            insertRandomSquare(gameArr,2);
             fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowRight':
             //console.log('ArrowRight key down');
+            event.preventDefault();
             moveAllCellsRight(gameArr);
+            mergeEqualCellsRight(gameArr);
+            moveAllCellsRight(gameArr);
+            insertRandomSquare(gameArr,2);
             fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowLeft':
             //console.log('ArrowLeft key down');
+            event.preventDefault();
             moveAllCellsLeft(gameArr);
+            mergeEqualCellsLeft(gameArr);
+            moveAllCellsLeft(gameArr);
+            insertRandomSquare(gameArr,2);
             fieldRender(gameArr,fieldElem);
             break;
-    
+
         default:
             break;
     }
