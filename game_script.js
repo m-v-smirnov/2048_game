@@ -20,11 +20,11 @@ let squareColors = {
 //    console.log(item);
 //});
 
-function fieldRender(arr,elem) {
-    if (!arr || !elem) return;
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr[0].length; j++) {
-            let item = arr[i][j];
+function fieldRender(arr2d,elem) {
+    if (!arr2d || !elem) return;
+    for (let i = 0; i < arr2d.length; i++) {
+        for (let j = 0; j < arr2d[0].length; j++) {
+            let item = arr2d[i][j];
             elem.rows[j].cells[i].style.backgroundColor = squareColors[item];
             if (item == 0) item = '';
             elem.rows[j].cells[i].innerHTML = item;
@@ -33,23 +33,85 @@ function fieldRender(arr,elem) {
     }
 };
 
-function getZerosPos(arr) {
+function getZerosPos(arr2d) {
     let result = [];
     let item;
-    if (!arr) return result;
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr[0].length; j++) {
-            item = arr[i][j];
+    if (!arr2d) return result;
+    for (let i = 0; i < arr2d.length; i++) {
+        for (let j = 0; j < arr2d[0].length; j++) {
+            item = arr2d[i][j];
             if (item == 0) result.push([i,j]);
         }
     }
     return result;
 }
 
-function insertRandomSquare(arr,item) {
-    let pos = getZerosPos(arr);
+function moveItemsToEdge(arr) {
+    let tempArr = Array(arr.length).fill(0);
+    let j = 0;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] != 0) {
+        tempArr[j] = arr[i];
+        j++;
+      }
+    }
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = tempArr[i];
+    }
+}
+
+function moveAllCellsUp(arr2d) {
+    for (let i = 0; i < arr2d.length; i++) {
+        moveItemsToEdge(arr2d[i]);
+    } 
+}
+
+function moveAllCellsDown(arr2d) {
+    for (let i = 0; i < arr2d.length; i++) {
+        arr2d[i].reverse();
+        moveItemsToEdge(arr2d[i]);
+        arr2d[i].reverse();
+    } 
+}
+
+function moveAllCellsLeft(arr2d) {
+    let tempArr = new Array(arr2d.length);
+
+    for (let j = 0; j < arr2d.length; j++) {
+        for (let i = 0; i < arr2d.length; i++) {
+            tempArr[i] = arr2d[i][j]; 
+        }
+    
+        moveItemsToEdge(tempArr);
+
+        for (let i = 0; i < arr2d.length; i++) {
+            arr2d[i][j] = tempArr[i]; 
+        }
+    }
+}
+
+function moveAllCellsRight(arr2d) {
+    let tempArr = new Array(arr2d.length);
+
+    for (let j = 0; j < arr2d.length; j++) {
+        for (let i = 0; i < arr2d.length; i++) {
+            tempArr[i] = arr2d[i][j]; 
+        }
+        
+        tempArr.reverse();
+        moveItemsToEdge(tempArr);
+        tempArr.reverse();
+        
+        for (let i = 0; i < arr2d.length; i++) {
+            arr2d[i][j] = tempArr[i]; 
+        }
+    }
+}
+
+function insertRandomSquare(arr2d,item) {
+    let pos = getZerosPos(arr2d);
     let index = Math.floor(Math.random() * pos.length);
-    arr[pos[index][0]][pos[index][1]] = item;
+    arr2d[pos[index][0]][pos[index][1]] = item;
 }
 
 function newGame() {
@@ -66,18 +128,27 @@ function newGame() {
 
 
 document.addEventListener('keydown', function(event) {
+    //event.preventDefault();
     switch (event.code) {
         case 'ArrowUp':
             //console.log('ArrowUp key down');
+            moveAllCellsUp(gameArr);
+            fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowDown':
             //console.log('ArrowDown key down');
+            moveAllCellsDown(gameArr);
+            fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowRight':
             //console.log('ArrowRight key down');
+            moveAllCellsRight(gameArr);
+            fieldRender(gameArr,fieldElem);
             break;
         case 'ArrowLeft':
             //console.log('ArrowLeft key down');
+            moveAllCellsLeft(gameArr);
+            fieldRender(gameArr,fieldElem);
             break;
     
         default:
@@ -90,6 +161,10 @@ document.addEventListener('click', function(event) {
 
     }
 });
+
+
+
+
 
 insertRandomSquare(gameArr,2);
 insertRandomSquare(gameArr,4);
