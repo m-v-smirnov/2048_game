@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <section class="game">
+    <section class="game" id = "game">
         <div class="game__header">
             <div>
                 <p class="game__name">2048</p>
@@ -29,7 +29,7 @@
                         <p>0</p>
                     </div>
                 </div>
-                <input class="game__button" type="button" value="New game" id="newGame">
+                <input class="game__button" type="button" value="New game" data-start>
             </div>
         </div>
         <div class="game__field">
@@ -54,7 +54,7 @@
                 <p>HOW TO PLAY: Use your arrow keys to move the tiles. Tiles 
                     with the same number merge into one when they touch. 
                     Add them up to reach 2048!</p>
-                    <a href="">Start playing</a>
+                    <a data-start href="#game">Start playing</a>
         </div>
 
     </section>
