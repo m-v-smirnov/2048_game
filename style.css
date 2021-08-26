@@ -46,6 +46,7 @@
     border-radius: 8px;
 }
 .game__button {
+    cursor: pointer;
     width: 150px;
     height: 50px;
     border-radius: 10px;
@@ -58,8 +59,8 @@
 .game__field {
     /*padding-top: 50px;*/
     margin: 50px auto;
-    border: 4px solid darkgrey;
-    border-radius: 8px;
+    /*border: 4px solid darkgrey;
+    border-radius: 8px;*/
 }
 TABLE {
     /*border-collapse: collapse;
@@ -67,10 +68,11 @@ TABLE {
     border-radius: 8px;*/
     background-color: darkgrey;
     border-spacing: 16px;
+    border-radius: 8px;
 }
 TD {
-    height: 120px;
-    width: 120px;
+    height: 122px;
+    width: 122px;
     border-radius: 8px;
     text-align: center;
     font-size: 32px;

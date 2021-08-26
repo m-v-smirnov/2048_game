@@ -1,25 +1,5 @@
 "use strict";
 
-let gameArr = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
-let fieldElem = document.getElementById('table');
-let squareColors = {
-    0: 'lightgrey',
-    2: 'aquamarine',
-    4: 'aqua',
-    8: 'chartreuse',
-    16: 'cornflowerblue',
-    32: 'chocolate',
-    64: 'crimson',
-    128: 'orange',
-    256: 'yellow',
-    512: 'blue',
-    1024: 'red',
-    2048: 'greenyellow',
-}
-//gameArr.forEach(function(item, index, array) {
-//    console.log(item);
-//});
-
 function fieldRender(arr2d,elem) {
     if (!arr2d || !elem) return;
     for (let i = 0; i < arr2d.length; i++) {
@@ -108,6 +88,31 @@ function moveAllCellsRight(arr2d) {
     }
 }
 
+function cellMoveEnable(arr2d,elem) {
+    let zeros = getZerosPos(arr2d);
+    let horizMoveEnable = false;
+    let vertMoveEnable = false;
+    if (zeros.length > 0) {
+        return true;
+    }
+    for (let i = 0; i < arr2d.length; i++) {
+        for (let j = 1; j < arr2d[0].length; j++) {
+            vertMoveEnable = vertMoveEnable || (arr2d[i][j] == arr2d[i][j-1]);
+        }
+    }
+    for (let j = 0; j < arr2d[0].length; j++) {
+        for (let i = 1; i < arr2d.length; i++) {
+            horizMoveEnable = horizMoveEnable || (arr2d[i][j] == arr2d[i-1][j]);
+        }
+    }
+    if (!horizMoveEnable && !vertMoveEnable) {
+        let event = new Event("gameover");
+        elem.dispatchEvent(event);
+    }
+    return (horizMoveEnable || vertMoveEnable);
+
+}
+
 function mergeEqualCellsLeft(arr2d) {
     for (let j = 0; j < arr2d.length; j++) {
         for (let i = 1; i < arr2d.length; i++) {
@@ -150,12 +155,15 @@ function mergeEqualCellsDown(arr2d) {
 }
 
 function insertRandomSquare(arr2d,item) {
-    let pos = getZerosPos(arr2d);
-    let index = Math.floor(Math.random() * pos.length);
-    arr2d[pos[index][0]][pos[index][1]] = item;
+    let zeros = getZerosPos(arr2d);
+    if (zeros.length > 0) {
+        let index = Math.floor(Math.random() * zeros.length);
+        arr2d[zeros[index][0]][zeros[index][1]] = item;
+    }
 }
 
 function newGame() {
+    gameNotOver = true;
     if (!gameArr) return result;
     for (let i = 0; i < gameArr.length; i++) {
         for (let j = 0; j < gameArr[0].length; j++) {
@@ -168,44 +176,71 @@ function newGame() {
 }
 
 
+let squareColors = {
+    0: 'lightgrey',
+    2: 'aquamarine',
+    4: 'aqua',
+    8: 'chartreuse',
+    16: 'cornflowerblue',
+    32: 'chocolate',
+    64: 'crimson',
+    128: 'orange',
+    256: 'yellow',
+    512: 'blue',
+    1024: 'red',
+    2048: 'greenyellow',
+}
+
+let gameArr = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+let fieldElem = document.getElementById('table');
+let gameNotOver;
+
 document.addEventListener('keydown', function(event) {
-    //event.preventDefault();
+    
     switch (event.code) {
         case 'ArrowUp':
             //console.log('ArrowUp key down');
             event.preventDefault();
-            moveAllCellsUp(gameArr);
-            mergeEqualCellsUp(gameArr);
-            moveAllCellsUp(gameArr);
-            insertRandomSquare(gameArr,2);
-            fieldRender(gameArr,fieldElem);
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+                moveAllCellsUp(gameArr);
+                mergeEqualCellsUp(gameArr);
+                moveAllCellsUp(gameArr);
+                insertRandomSquare(gameArr,2);
+                fieldRender(gameArr,fieldElem);    
+            }
             break;
         case 'ArrowDown':
             //console.log('ArrowDown key down');
             event.preventDefault();
-            moveAllCellsDown(gameArr);
-            mergeEqualCellsDown(gameArr);
-            moveAllCellsDown(gameArr);
-            insertRandomSquare(gameArr,2);
-            fieldRender(gameArr,fieldElem);
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+                moveAllCellsDown(gameArr);
+                mergeEqualCellsDown(gameArr);
+                moveAllCellsDown(gameArr);
+                insertRandomSquare(gameArr,2);
+                fieldRender(gameArr,fieldElem);    
+            }
             break;
         case 'ArrowRight':
             //console.log('ArrowRight key down');
             event.preventDefault();
-            moveAllCellsRight(gameArr);
-            mergeEqualCellsRight(gameArr);
-            moveAllCellsRight(gameArr);
-            insertRandomSquare(gameArr,2);
-            fieldRender(gameArr,fieldElem);
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+                moveAllCellsRight(gameArr);
+                mergeEqualCellsRight(gameArr);
+                moveAllCellsRight(gameArr);
+                insertRandomSquare(gameArr,2);
+                fieldRender(gameArr,fieldElem);
+            }
             break;
         case 'ArrowLeft':
             //console.log('ArrowLeft key down');
             event.preventDefault();
-            moveAllCellsLeft(gameArr);
-            mergeEqualCellsLeft(gameArr);
-            moveAllCellsLeft(gameArr);
-            insertRandomSquare(gameArr,2);
-            fieldRender(gameArr,fieldElem);
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+                moveAllCellsLeft(gameArr);
+                mergeEqualCellsLeft(gameArr);
+                moveAllCellsLeft(gameArr);
+                insertRandomSquare(gameArr,2);
+                fieldRender(gameArr,fieldElem);
+            }
             break;
 
         default:
@@ -215,15 +250,20 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('click', function(event) {
     if (event.target.dataset.start != undefined) {
         newGame();
-
     }
+});
+fieldElem.addEventListener('gameover', function() {
+    console.log("game over");
+    gameNotOver = false;
+    let elem = document.createElement('div');
+    elem.innerHTML = "!!!!!!!!!GAME OVER!!!!!!!!!";
+    fieldElem.before(elem); 
 });
 
 
 
 
-
-insertRandomSquare(gameArr,2);
+/*insertRandomSquare(gameArr,2);
 insertRandomSquare(gameArr,4);
 insertRandomSquare(gameArr,8);
 insertRandomSquare(gameArr,16);
@@ -233,12 +273,11 @@ insertRandomSquare(gameArr,128);
 insertRandomSquare(gameArr,256);
 insertRandomSquare(gameArr,512);
 insertRandomSquare(gameArr,1024);
-insertRandomSquare(gameArr,2048);
-//newGame();
-
+insertRandomSquare(gameArr,2048);*/
 //console.log(getZerosPos(gameArr));
 //gameArr.forEach(function(item, index, array) {
 //    console.log(item);
 //});
 
+newGame();
 fieldRender(gameArr,fieldElem);
