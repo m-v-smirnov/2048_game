@@ -119,6 +119,7 @@ function mergeEqualCellsLeft(arr2d) {
             if (arr2d[i][j] == arr2d[i-1][j]) {
                 arr2d[i][j] = 0;
                 arr2d[i-1][j] *= 2;
+                computeScore(arr2d[i-1][j]);
             }
         }
     }
@@ -129,6 +130,7 @@ function mergeEqualCellsRight(arr2d) {
             if (arr2d[i][j] == arr2d[i-1][j]) {
                 arr2d[i-1][j] = 0;
                 arr2d[i][j] *= 2;
+                computeScore(arr2d[i][j]);
             }
         }
     }
@@ -139,6 +141,7 @@ function mergeEqualCellsUp(arr2d) {
             if (arr2d[i][j] == arr2d[i][j-1]) {
                 arr2d[i][j] = 0;
                 arr2d[i][j-1] *= 2;
+                computeScore(arr2d[i][j-1]);
             }
         }
     }
@@ -149,6 +152,7 @@ function mergeEqualCellsDown(arr2d) {
             if (arr2d[i][j] == arr2d[i][j-1]) {
                 arr2d[i][j-1] = 0;
                 arr2d[i][j] *= 2;
+                computeScore(arr2d[i][j]);
             }
         }
     }
@@ -164,6 +168,7 @@ function insertRandomSquare(arr2d,item) {
 
 function newGame() {
     gameNotOver = true;
+    localStorage.setItem('score',0);
     let elem = document.getElementById("game__over");
     if(elem) {
         elem.remove();
@@ -177,6 +182,22 @@ function newGame() {
     insertRandomSquare(gameArr,2);
     insertRandomSquare(gameArr,2);
     fieldRender(gameArr,fieldElem);
+}
+
+function computeScore(arg) {
+    let score= arg + Number(localStorage.getItem('score'));
+    let scoreElem = document.getElementById('score');
+    let bestElem = document.getElementById('best');
+    
+    localStorage.setItem('score',score);
+    scoreElem.style.color = 'white';
+    scoreElem.innerHTML = score;
+
+    if(score > Number(localStorage.getItem('best'))) {
+        localStorage.setItem('best',score)
+    }
+    bestElem.style.color = 'white';
+    bestElem.innerHTML = Number(localStorage.getItem('best'));
 }
 
 
@@ -198,6 +219,11 @@ let squareColors = {
 let gameArr = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 let fieldElem = document.getElementById('table');
 let gameNotOver;
+
+let bestElem = document.getElementById('best');
+    
+bestElem.style.color = 'white';
+bestElem.innerHTML = Number(localStorage.getItem('best'));
 
 document.addEventListener('keydown', function(event) {
     

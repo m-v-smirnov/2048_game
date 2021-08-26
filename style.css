@@ -39,11 +39,13 @@
     padding: 5px 15px;
     background-color: grey;
     border-radius: 8px;
+    color: darkgrey;
 }
 .game__best {
     padding: 5px 15px;
     background-color: grey;
     border-radius: 8px;
+    color: darkgrey;
 }
 .game__button {
     cursor: pointer;
@@ -70,6 +72,7 @@
     background-color:dimgrey;
     color: black;
     font-size: 72px;
+    font-weight: 600;
     text-align: center;
     display: flex;
     flex-direction: column;
