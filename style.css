@@ -57,15 +57,25 @@
     font-weight: 600;
 }
 .game__field {
-    /*padding-top: 50px;*/
     margin: 50px auto;
-    /*border: 4px solid darkgrey;
-    border-radius: 8px;*/
+    position: relative;
+}
+.game__over {
+    opacity: 75%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 568px;
+    height: 568px;
+    background-color:dimgrey;
+    color: black;
+    font-size: 72px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 TABLE {
-    /*border-collapse: collapse;
-    border: 16px solid darkgrey;
-    border-radius: 8px;*/
     background-color: darkgrey;
     border-spacing: 16px;
     border-radius: 8px;

@@ -164,6 +164,10 @@ function insertRandomSquare(arr2d,item) {
 
 function newGame() {
     gameNotOver = true;
+    let elem = document.getElementById("game__over");
+    if(elem) {
+        elem.remove();
+    }
     if (!gameArr) return result;
     for (let i = 0; i < gameArr.length; i++) {
         for (let j = 0; j < gameArr[0].length; j++) {
@@ -256,8 +260,10 @@ fieldElem.addEventListener('gameover', function() {
     console.log("game over");
     gameNotOver = false;
     let elem = document.createElement('div');
-    elem.innerHTML = "!!!!!!!!!GAME OVER!!!!!!!!!";
-    fieldElem.before(elem); 
+    elem.className = "game__over";
+    elem.id = "game__over";
+    elem.innerHTML = "GAME OVER";
+    fieldElem.after(elem); 
 });
 
 
