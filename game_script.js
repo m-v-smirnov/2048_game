@@ -40,6 +40,43 @@ function moveItemsToEdge(arr) {
     }
 }
 
+function allCellsAtEdge(arr2d,edge) {
+    let result = true;
+    switch (edge) {
+        case 'up':
+            for (let i = 0; i < arr2d.length; i++) {
+                for (let j = 0; j < arr2d[0].length-1; j++) {
+                    result = result && !(arr2d[i][j] == 0 && arr2d[i][j+1] > 0);
+                }
+            }
+            break;
+        case 'down':
+            for (let i = 0; i < arr2d.length; i++) {
+                for (let j = 0; j < arr2d[0].length-1; j++) {
+                    result = result && !(arr2d[i][j] > 0 && arr2d[i][j+1] == 0);
+                }
+            }
+            break;
+        case 'left':
+            for (let j = 0; j < arr2d[0].length; j++) {
+                for (let i = 0; i < arr2d.length-1; i++) {
+                    result = result && !(arr2d[i][j] == 0 && arr2d[i+1][j] > 0);
+                }
+            }            
+            break;
+        case 'right':
+            for (let j = 0; j < arr2d[0].length; j++) {
+                for (let i = 0; i < arr2d.length-1; i++) {
+                    result = result && !(arr2d[i][j] > 0 && arr2d[i+1][j] == 0);
+                }
+            }     
+            break;
+        default:
+            break;
+    }
+    return result;
+}
+
 function moveAllCellsUp(arr2d) {
     for (let i = 0; i < arr2d.length; i++) {
         moveItemsToEdge(arr2d[i]);
@@ -95,22 +132,42 @@ function cellMoveEnable(arr2d,elem) {
     if (zeros.length > 0) {
         return true;
     }
-    for (let i = 0; i < arr2d.length; i++) {
-        for (let j = 1; j < arr2d[0].length; j++) {
-            vertMoveEnable = vertMoveEnable || (arr2d[i][j] == arr2d[i][j-1]);
-        }
-    }
-    for (let j = 0; j < arr2d[0].length; j++) {
-        for (let i = 1; i < arr2d.length; i++) {
-            horizMoveEnable = horizMoveEnable || (arr2d[i][j] == arr2d[i-1][j]);
-        }
-    }
+    
+    vertMoveEnable = vertMoveEnable || cellsMergeEnable(arr2d,'up');
+    horizMoveEnable = horizMoveEnable || cellsMergeEnable(arr2d,'left'); 
+        
     if (!horizMoveEnable && !vertMoveEnable) {
         let event = new Event("gameover");
         elem.dispatchEvent(event);
     }
     return (horizMoveEnable || vertMoveEnable);
 
+}
+
+function cellsMergeEnable(arr2d,direction) {
+    let result = false;
+    switch (direction) {
+        case 'up':
+        case 'down':
+            for (let i = 0; i < arr2d.length; i++) {
+                for (let j = 1; j < arr2d[0].length; j++) {
+                    result = result || (arr2d[i][j] != 0 && arr2d[i][j] == arr2d[i][j-1]);
+                }
+            }
+            break;
+        case 'left':
+        case 'right':
+            for (let j = 0; j < arr2d[0].length; j++) {
+                for (let i = 1; i < arr2d.length; i++) {
+                    result = result || (arr2d[i][j] != 0 && arr2d[i][j] == arr2d[i-1][j]);
+                }
+            }    
+            break;
+    
+        default:
+            break;
+    }
+    return result;
 }
 
 function mergeEqualCellsLeft(arr2d) {
@@ -231,7 +288,8 @@ document.addEventListener('keydown', function(event) {
         case 'ArrowUp':
             //console.log('ArrowUp key down');
             event.preventDefault();
-            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem) &&
+             !(allCellsAtEdge(gameArr,'up') && !cellsMergeEnable(gameArr,'up'))) {
                 moveAllCellsUp(gameArr);
                 mergeEqualCellsUp(gameArr);
                 moveAllCellsUp(gameArr);
@@ -242,7 +300,8 @@ document.addEventListener('keydown', function(event) {
         case 'ArrowDown':
             //console.log('ArrowDown key down');
             event.preventDefault();
-            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem) &&
+            !(allCellsAtEdge(gameArr,'down') && !cellsMergeEnable(gameArr,'down'))) {
                 moveAllCellsDown(gameArr);
                 mergeEqualCellsDown(gameArr);
                 moveAllCellsDown(gameArr);
@@ -253,7 +312,8 @@ document.addEventListener('keydown', function(event) {
         case 'ArrowRight':
             //console.log('ArrowRight key down');
             event.preventDefault();
-            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem) &&
+            !(allCellsAtEdge(gameArr,'right') && !cellsMergeEnable(gameArr,'right'))) {
                 moveAllCellsRight(gameArr);
                 mergeEqualCellsRight(gameArr);
                 moveAllCellsRight(gameArr);
@@ -264,7 +324,8 @@ document.addEventListener('keydown', function(event) {
         case 'ArrowLeft':
             //console.log('ArrowLeft key down');
             event.preventDefault();
-            if (gameNotOver && cellMoveEnable(gameArr,fieldElem)) {
+            if (gameNotOver && cellMoveEnable(gameArr,fieldElem) &&
+            !(allCellsAtEdge(gameArr,'left') && !cellsMergeEnable(gameArr,'left'))) {
                 moveAllCellsLeft(gameArr);
                 mergeEqualCellsLeft(gameArr);
                 moveAllCellsLeft(gameArr);
@@ -293,23 +354,6 @@ fieldElem.addEventListener('gameover', function() {
 });
 
 
-
-
-/*insertRandomSquare(gameArr,2);
-insertRandomSquare(gameArr,4);
-insertRandomSquare(gameArr,8);
-insertRandomSquare(gameArr,16);
-insertRandomSquare(gameArr,32);
-insertRandomSquare(gameArr,64);
-insertRandomSquare(gameArr,128);
-insertRandomSquare(gameArr,256);
-insertRandomSquare(gameArr,512);
-insertRandomSquare(gameArr,1024);
-insertRandomSquare(gameArr,2048);*/
-//console.log(getZerosPos(gameArr));
-//gameArr.forEach(function(item, index, array) {
-//    console.log(item);
-//});
 
 newGame();
 fieldRender(gameArr,fieldElem);
